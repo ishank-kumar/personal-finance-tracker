@@ -1,0 +1,29 @@
+/* Ensures full-height layout */
+.app {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f9fafb;
+}
+
+/* Main content layout */
+.main-content {
+  flex-grow: 1;
+  padding: 2rem;
+  transition: margin-left 0.3s ease;
+  overflow-x: hidden; /* Prevents charts or cards from pushing layout */
+  background-color: #f9fafb;
+}
+
+/* Sidebar space for desktop */
+@media (min-width: 768px) {
+  .main-content {
+    margin-left: 220px; /* Width of sidebar */
+  }
+}
+
+/* Full width for mobile view */
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+  }
+}
