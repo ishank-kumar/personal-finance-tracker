@@ -1,4 +1,3 @@
-// === FOLDER: frontend/src/pages/Dashboard.js ===
 import React, { useEffect, useState } from "react";
 import DashboardCard from "../components/DashboardCard";
 import { FaRupeeSign, FaChartPie, FaWallet, FaPiggyBank } from "react-icons/fa";
@@ -6,6 +5,9 @@ import MonthlyBarChart from "../components/BarChart";
 import CategoryPieChart from "../components/PieChart";
 import axios from "axios";
 import "../styles/Dashboard.css";
+
+// ✅ Set base URL of deployed backend
+const BASE_URL = "https://personal-finance-tracker-1-5zii.onrender.com";
 
 const Dashboard = () => {
   const [transactions, setTransactions] = useState([]);
@@ -20,8 +22,8 @@ const Dashboard = () => {
 
   const loadDashboardData = async () => {
     try {
-      // Fetch transactions
-      const txRes = await axios.get("http://localhost:5000/api/transactions");
+      // ✅ Fetch transactions from live backend
+      const txRes = await axios.get(`${BASE_URL}/api/transactions`);
       const txData = txRes.data;
       setTransactions(txData);
 
@@ -41,8 +43,8 @@ const Dashboard = () => {
       );
       setTopCategory(topCat[0]);
 
-      // Fetch budgets from API
-      const budgetRes = await axios.get("http://localhost:5000/api/budgets");
+      // ✅ Fetch budgets from live backend
+      const budgetRes = await axios.get(`${BASE_URL}/api/budgets`);
       const budgetData = budgetRes.data;
 
       // Calculate total budget and remaining

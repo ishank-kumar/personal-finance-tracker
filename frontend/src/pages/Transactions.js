@@ -4,12 +4,16 @@ import axios from "axios";
 import TransactionForm from "../components/TransactionForm";
 import "../styles/TransactionForm.css";
 
+// ✅ Base URL for deployed backend
+const BASE_URL = "https://personal-finance-tracker-1-5zii.onrender.com";
+
 const Transactions = () => {
   const [transactions, setTransactions] = useState([]);
 
   const loadTransactions = () => {
-    axios.get("http://localhost:5000/api/transactions")
-      .then(res => setTransactions(res.data));
+    axios.get(`${BASE_URL}/api/transactions`)
+      .then(res => setTransactions(res.data))
+      .catch(err => console.error("Error loading transactions:", err));
   };
 
   useEffect(() => {
@@ -23,7 +27,9 @@ const Transactions = () => {
         {transactions.map((t) => (
           <li key={t._id}>
             <div>{t.description}</div>
-            <div>₹{t.amount} | {t.category} | {new Date(t.date).toLocaleDateString()}</div>
+            <div>
+              ₹{t.amount} | {t.category} | {new Date(t.date).toLocaleDateString()}
+            </div>
           </li>
         ))}
       </ul>

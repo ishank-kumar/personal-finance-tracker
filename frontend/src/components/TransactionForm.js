@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../styles/TransactionForm.css";
 
+const BASE_URL = "https://personal-finance-tracker-1-5zii.onrender.com";
+
 const TransactionForm = ({ onTransactionAdded }) => {
   const [amount, setAmount] = useState("");
   const [date, setDate] = useState("");
@@ -14,7 +16,7 @@ const TransactionForm = ({ onTransactionAdded }) => {
 
   const fetchTransactions = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/transactions");
+      const res = await axios.get(`${BASE_URL}/api/transactions`);
       setTransactions(res.data.reverse());
     } catch (error) {
       console.error("Failed to load transactions", error);
@@ -33,15 +35,14 @@ const TransactionForm = ({ onTransactionAdded }) => {
 
     try {
       if (editId) {
-        await axios.put(`http://localhost:5000/api/transactions/${editId}`, transaction);
+        await axios.put(`${BASE_URL}/api/transactions/${editId}`, transaction);
         setEditId(null);
       } else {
-        await axios.post("http://localhost:5000/api/transactions", transaction);
+        await axios.post(`${BASE_URL}/api/transactions`, transaction);
         setToastVisible(true);
         setTimeout(() => setToastVisible(false), 3000);
       }
 
-      // Clear form
       setAmount("");
       setDate("");
       setDescription("");
@@ -64,7 +65,7 @@ const TransactionForm = ({ onTransactionAdded }) => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/transactions/${id}`);
+      await axios.delete(`${BASE_URL}/api/transactions/${id}`);
       fetchTransactions();
     } catch (error) {
       console.error("Delete failed", error);

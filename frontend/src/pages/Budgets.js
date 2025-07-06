@@ -13,6 +13,9 @@ const DEFAULT_BUDGETS = {
   others: 1000,
 };
 
+// Set base URL of deployed backend
+const BASE_URL = "https://personal-finance-tracker-1-5zii.onrender.com";
+
 const Budgets = () => {
   const [, setTransactions] = useState([]);
   const [spent, setSpent] = useState({});
@@ -30,16 +33,16 @@ const Budgets = () => {
   const loadData = useCallback(async () => {
     try {
       // Fetch transactions
-      const txRes = await axios.get("http://localhost:5000/api/transactions");
+      const txRes = await axios.get(`${BASE_URL}/api/transactions`);
       setTransactions(txRes.data);
       calculateSpending(txRes.data);
 
       // Fetch budgets from DB
-      const budgetRes = await axios.get("http://localhost:5000/api/budgets");
+      const budgetRes = await axios.get(`${BASE_URL}/api/budgets`);
       const data = budgetRes.data;
 
       if (!data || Object.keys(data).length === 0) {
-        await axios.put("http://localhost:5000/api/budgets", DEFAULT_BUDGETS);
+        await axios.put(`${BASE_URL}/api/budgets`, DEFAULT_BUDGETS);
         setBudgets(DEFAULT_BUDGETS);
       } else {
         setBudgets(data);
@@ -62,7 +65,7 @@ const Budgets = () => {
     setBudgets(updated);
 
     try {
-      await axios.put("http://localhost:5000/api/budgets", updated);
+      await axios.put(`${BASE_URL}/api/budgets`, updated);
     } catch (err) {
       console.error("Failed to update budget:", err);
     }
@@ -90,14 +93,13 @@ const Budgets = () => {
 
       <div className="charts">
         <BudgetChart
-  spent={Object.fromEntries(
-    Object.entries(spent).sort(([a], [b]) => (a === "others" ? 1 : b === "others" ? -1 : 0))
-  )}
-  budgets={Object.fromEntries(
-    Object.entries(budgets).sort(([a], [b]) => (a === "others" ? 1 : b === "others" ? -1 : 0))
-  )}
-/>
-
+          spent={Object.fromEntries(
+            Object.entries(spent).sort(([a], [b]) => (a === "others" ? 1 : b === "others" ? -1 : 0))
+          )}
+          budgets={Object.fromEntries(
+            Object.entries(budgets).sort(([a], [b]) => (a === "others" ? 1 : b === "others" ? -1 : 0))
+          )}
+        />
       </div>
     </div>
   );
